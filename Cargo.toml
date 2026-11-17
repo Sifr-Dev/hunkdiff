@@ -1,0 +1,6 @@
+[package]
+name = "sifr-diff"
+version = "0.1.0"
+edition = "2021"
+description = "Zero-dependency line diff — unified output, exit 0/1 like diff"
+license = "MIT"
