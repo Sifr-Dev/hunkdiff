@@ -47,6 +47,9 @@ implementation with a subquadratic or bounded-memory algorithm.
 
 Paths are passed as `OsString`; file contents and output do not require UTF-8.
 Non-UTF-8 paths in diagnostics may be rendered with a replacement character.
+Whether such a filename can be created or opened remains host/filesystem
+specific: macOS may reject raw non-UTF-8 names with `EILSEQ`; Linux and Android
+coverage exercises them. Content-byte preservation is platform independent.
 Exactly two operands are required. Missing files, directory reads, stdin/read
 failures, oversized matrices, and stdout write failures produce exit 2 and a
 diagnostic instead of a Rust panic. Broken-pipe reporting follows the host's

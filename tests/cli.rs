@@ -157,7 +157,7 @@ fn dp_limit_accepts_exact_rectangular_matrix_and_rejects_larger() {
 
 #[cfg(unix)]
 #[test]
-fn non_utf8_paths_are_supported_and_reported() {
+fn non_utf8_missing_paths_are_supported_and_reported() {
     use std::os::unix::ffi::OsStringExt;
 
     let fixture = Fixture::new();
@@ -168,7 +168,15 @@ fn non_utf8_paths_are_supported_and_reported() {
     assert_eq!(output.status.code(), Some(2));
     assert_eq!(output.stdout, b"");
     assert!(String::from_utf8_lossy(&output.stderr).contains("bad-�"));
+}
 
+#[cfg(any(target_os = "linux", target_os = "android"))]
+#[test]
+fn non_utf8_file_paths_are_supported() {
+    use std::os::unix::ffi::OsStringExt;
+
+    // macOS can reject these names with EILSEQ at the filesystem boundary.
+    let fixture = Fixture::new();
     let old = fixture
         .directory
         .join(std::ffi::OsString::from_vec(b"old-\xff".to_vec()));
