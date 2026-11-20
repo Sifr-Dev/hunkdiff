@@ -7,55 +7,58 @@
 
 # sifr-diff
 
-zero-dependency line diff in Rust. LCS via dynamic programming, 3 lines of
-context per side, hunks split when the unchanged gap exceeds 6 lines.
-Exit 0 = identical, 1 = different — `diff` semantics.
+Zero-dependency, byte-preserving line diff in Rust. Dynamic-programming LCS,
+three context lines, and deterministic deletion-first tie-breaking. Exit 0 =
+identical, 1 = different, 2 = error.
 
 ```sh
 sifr-diff a.txt b.txt
 cat b.txt | sifr-diff a.txt -
 ```
 
-## evidence (this machine, 2026-11-17)
-
-byte-identical hunk bodies vs `diff -u` on 3 fixtures:
+## Example
 
 ```console
-$ sifr-diff /tmp/far_a.txt /tmp/far_b.txt
-@@ -2,7 +2,7 @@
- line 2
- line 3
- line 4
--line 5
-+CHANGED_AT_5
- line 6
- line 7
- line 8
-@@ -32,7 +32,7 @@
- line 32
- line 33
- line 34
--line 35
-+CHANGED_AT_35
- line 36
- line 37
- line 38
+$ sifr-diff old.txt new.txt
+@@ -1,3 +1,3 @@
+ same
+-old
++new
+ end
 $ sifr-diff same.txt same.txt ; echo $?
 0
 ```
 
-## honest scope
+## Scope and compatibility
 
-- perfect line LCS via DP — O(n·m) time/memory; refuses files where n·m > 64M cells (~4 Mi lines total) — for huge files use `diffutils`
-- unified hunks with 3 lines of context, same hunk splitting as `diff -u`; no `--side-by-side`, no word-diff, no binary detection
-- hunk bodies byte-identical to `diff -u` (verified); header lines intentionally carry no timestamps
+- LF-delimited byte lines, including Unicode, invalid UTF-8, and NUL; no
+  Unicode normalization, CR stripping, or text encoding conversion.
+- `O(n·m)` LCS time and matrix memory; `(n+1)(m+1)` must be at most 64 Mi cells
+  (256 MiB for the matrix alone). Checked arithmetic guards allocation size.
+- Unified hunks with three context lines; six common lines merge, seven split.
+  Output has hunk headers only, without file/timestamp headers.
+- GNU-style ranges and no-newline markers. Ambiguous repeated-line alignments
+  follow the documented deletion-first policy and can differ from GNU's equally
+  valid LCS choices. No binary detection or other `diff` command-line options.
 
-## build
+## Build and verify
 
 ```sh
-cargo build --release
+cargo build --release --locked
+cargo test --locked
+cargo clippy --locked --all-targets -- -D warnings
+python3 tests/differential.py target/debug/sifr-diff
 ```
 
-## license
+The seeded differential suite validates reconstruction, optimal LCS length,
+context, malformed CLI/file errors, and deterministic reruns. When GNU diff is
+available, it checks semantic equivalence and counts exact hunk-body matches
+under the [documented compatible policy](docs/verification.md).
 
-`MIT` — see `LICENSE`. built from zero.
+- [Architecture and resource limits](docs/architecture.md)
+- [Verification policy and commands](docs/verification.md)
+- [Release notes and checklist](docs/release.md)
+
+## License
+
+`MIT` — see `LICENSE`. Built from zero.
