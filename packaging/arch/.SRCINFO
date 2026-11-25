@@ -1,0 +1,14 @@
+pkgbase = hunkdiff
+	pkgdesc = Zero-dependency byte-preserving unified line diff
+	pkgver = 0.1.1
+	pkgrel = 1
+	url = https://github.com/Sifr-Dev/hunkdiff
+	arch = x86_64
+	arch = aarch64
+	license = MIT
+	makedepends = cargo
+	makedepends = python
+	source = hunkdiff-0.1.1.tar.gz::https://github.com/Sifr-Dev/hunkdiff/archive/refs/tags/v0.1.1.tar.gz
+	sha256sums = 3315f9c270c173486af8fa87fd7ae181b7d45dcb3e718af4375ce3448ea9f164
+
+pkgname = hunkdiff

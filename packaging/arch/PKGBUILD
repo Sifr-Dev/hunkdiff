@@ -1,0 +1,28 @@
+pkgname=hunkdiff
+pkgver=0.1.1
+pkgrel=1
+pkgdesc='Zero-dependency byte-preserving unified line diff'
+arch=('x86_64' 'aarch64')
+url='https://github.com/Sifr-Dev/hunkdiff'
+license=('MIT')
+makedepends=('cargo' 'python')
+source=("$pkgname-$pkgver.tar.gz::https://github.com/Sifr-Dev/hunkdiff/archive/refs/tags/v$pkgver.tar.gz")
+sha256sums=('3315f9c270c173486af8fa87fd7ae181b7d45dcb3e718af4375ce3448ea9f164')
+
+build() {
+  cd "$pkgname-$pkgver"
+  export CARGO_TARGET_DIR=target
+  cargo build --release --locked --offline
+}
+
+check() {
+  cd "$pkgname-$pkgver"
+  cargo test --release --locked --offline
+  python3 tests/differential.py target/release/hunkdiff --cases 300 --seed 20261125
+}
+
+package() {
+  cd "$pkgname-$pkgver"
+  install -Dm755 target/release/hunkdiff "$pkgdir/usr/bin/hunkdiff"
+  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
