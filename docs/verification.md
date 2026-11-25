@@ -5,9 +5,9 @@ Run from the repository root:
 ```sh
 cargo test --locked
 cargo clippy --locked --all-targets -- -D warnings
-python3 tests/differential.py target/debug/sifr-diff
+python3 tests/differential.py target/debug/hunkdiff
 # A larger reproducible run (change the seed to explore a different corpus):
-python3 tests/differential.py target/debug/sifr-diff --cases 5000 --seed 42
+python3 tests/differential.py target/debug/hunkdiff --cases 5000 --seed 42
 ```
 
 `tests/differential.py` requires Python 3.8+ and no third-party packages. It

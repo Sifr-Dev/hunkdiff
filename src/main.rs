@@ -1,5 +1,5 @@
-//! sifr-diff — zero-dependency, byte-preserving line diff.
-//!   sifr-diff [a|-] [b|-]
+//! hunkdiff — zero-dependency, byte-preserving line diff.
+//!   hunkdiff [a|-] [b|-]
 //! Exit 0 = identical, 1 = different, 2 = error. Unified hunks have three
 //! lines of context on each side and use deterministic deletion-first LCS ties.
 use std::ffi::{OsStr, OsString};
@@ -169,13 +169,13 @@ fn read_input(path: &OsStr) -> io::Result<Vec<u8>> {
 
 fn run(args: Vec<OsString>) -> Result<bool, String> {
     if args.len() != 3 {
-        return Err("usage: sifr-diff [a|-] [b|-]".to_owned());
+        return Err("usage: hunkdiff [a|-] [b|-]".to_owned());
     }
 
     let both_stdin = args[1] == OsStr::new("-") && args[2] == OsStr::new("-");
     let a_data = read_input(&args[1]).map_err(|error| {
         format!(
-            "sifr-diff: cannot read {}: {error}",
+            "hunkdiff: cannot read {}: {error}",
             args[1].to_string_lossy()
         )
     })?;
@@ -184,7 +184,7 @@ fn run(args: Vec<OsString>) -> Result<bool, String> {
     } else {
         Some(read_input(&args[2]).map_err(|error| {
             format!(
-                "sifr-diff: cannot read {}: {error}",
+                "hunkdiff: cannot read {}: {error}",
                 args[2].to_string_lossy()
             )
         })?)
@@ -197,10 +197,10 @@ fn run(args: Vec<OsString>) -> Result<bool, String> {
     };
     let (n, m) = (a.len(), b.len());
     let cells = checked_dp_cells(n, m)
-        .ok_or_else(|| "sifr-diff: too large (line-count overflow)".to_owned())?;
+        .ok_or_else(|| "hunkdiff: too large (line-count overflow)".to_owned())?;
     if cells > MAX_DP_CELLS {
         return Err(format!(
-            "sifr-diff: too large ({cells} DP cells; limit is {MAX_DP_CELLS})"
+            "hunkdiff: too large ({cells} DP cells; limit is {MAX_DP_CELLS})"
         ));
     }
 
@@ -222,7 +222,7 @@ fn run(args: Vec<OsString>) -> Result<bool, String> {
         return Ok(false);
     }
     write_unified(&mut io::stdout().lock(), &ops, &hunks)
-        .map_err(|error| format!("sifr-diff: write failed: {error}"))?;
+        .map_err(|error| format!("hunkdiff: write failed: {error}"))?;
     Ok(true)
 }
 

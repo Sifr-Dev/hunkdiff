@@ -5,15 +5,15 @@
   </picture>
 </p>
 
-# sifr-diff
+# hunkdiff
 
 Zero-dependency, byte-preserving line diff in Rust. Dynamic-programming LCS,
 three context lines, and deterministic deletion-first tie-breaking. Exit 0 =
 identical, 1 = different, 2 = error.
 
 ```sh
-sifr-diff a.txt b.txt
-cat b.txt | sifr-diff a.txt -
+hunkdiff a.txt b.txt
+cat b.txt | hunkdiff a.txt -
 ```
 
 ## Example

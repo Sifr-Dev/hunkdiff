@@ -13,7 +13,7 @@ impl Fixture {
     fn new() -> Self {
         static NEXT_ID: AtomicU64 = AtomicU64::new(0);
         let directory = std::env::temp_dir().join(format!(
-            "sifr-diff-cli-{}-{}",
+            "hunkdiff-cli-{}-{}",
             std::process::id(),
             NEXT_ID.fetch_add(1, Ordering::Relaxed)
         ));
@@ -39,7 +39,7 @@ impl Drop for Fixture {
 }
 
 fn binary() -> &'static OsStr {
-    OsStr::new(env!("CARGO_BIN_EXE_sifr-diff"))
+    OsStr::new(env!("CARGO_BIN_EXE_hunkdiff"))
 }
 
 fn invoke<I, S>(args: I) -> Output
@@ -69,20 +69,20 @@ fn argument_count_and_io_errors_exit_two() {
         let output = invoke(arguments);
         assert_eq!(output.status.code(), Some(2));
         assert_eq!(output.stdout, b"");
-        assert_eq!(output.stderr, b"usage: sifr-diff [a|-] [b|-]\n");
+        assert_eq!(output.stderr, b"usage: hunkdiff [a|-] [b|-]\n");
     }
     let fixture = Fixture::new();
     let file = fixture.file("file", b"same\n");
     let output = invoke([file.as_os_str(), file.as_os_str(), OsStr::new("extra")]);
     assert_eq!(output.status.code(), Some(2));
     assert_eq!(output.stdout, b"");
-    assert_eq!(output.stderr, b"usage: sifr-diff [a|-] [b|-]\n");
+    assert_eq!(output.stderr, b"usage: hunkdiff [a|-] [b|-]\n");
 
     let output = invoke([fixture.path("missing").as_os_str(), file.as_os_str()]);
     assert_eq!(output.status.code(), Some(2));
     assert_eq!(output.stdout, b"");
     let stderr = String::from_utf8(output.stderr).unwrap();
-    assert!(stderr.starts_with("sifr-diff: cannot read "), "{stderr:?}");
+    assert!(stderr.starts_with("hunkdiff: cannot read "), "{stderr:?}");
     assert!(stderr.contains("missing"), "{stderr:?}");
 
     let output = invoke([fixture.directory.as_os_str(), file.as_os_str()]);
@@ -90,7 +90,7 @@ fn argument_count_and_io_errors_exit_two() {
     assert_eq!(output.stdout, b"");
     assert!(String::from_utf8(output.stderr)
         .unwrap()
-        .starts_with("sifr-diff: cannot read "));
+        .starts_with("hunkdiff: cannot read "));
 }
 
 #[test]
@@ -151,7 +151,7 @@ fn dp_limit_accepts_exact_rectangular_matrix_and_rejects_larger() {
     assert_eq!(output.stdout, b"");
     assert_eq!(
         output.stderr,
-        b"sifr-diff: too large (100663296 DP cells; limit is 67108864)\n"
+        b"hunkdiff: too large (100663296 DP cells; limit is 67108864)\n"
     );
 }
 

@@ -13,6 +13,8 @@ Verification-focused changes, without adding runtime dependencies:
 - Specify deterministic deletion-first LCS ties and add regression, CLI,
   randomized differential, structural patch, and GNU differential tests.
 - Add Linux/macOS/Windows CI, architecture, compatibility, and limits docs.
+- Use `hunkdiff` consistently for the repository, Cargo package, executable, and
+  release artifact. Existing diff behavior and exit statuses are unchanged.
 
 No package-version bump or release is claimed by this verification branch.
 Maintainers should update `Cargo.toml`, `Cargo.lock`, and this file together
