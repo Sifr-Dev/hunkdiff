@@ -1,6 +1,7 @@
 [package]
-name = "sifr-diff"
+name = "hunkdiff"
 version = "0.1.0"
 edition = "2021"
 description = "Zero-dependency line diff — unified output, exit 0/1 like diff"
+repository = "https://github.com/Sifr-Dev/hunkdiff"
 license = "MIT"
