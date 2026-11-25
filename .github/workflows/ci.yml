@@ -34,6 +34,6 @@ jobs:
       - name: Build binary
         run: cargo build --locked
       - name: Check deterministic DP policy against independent oracle and GNU diff
-        run: python3 tests/differential.py target/debug/sifr-diff --cases 1000 --seed 20261120
+        run: python3 tests/differential.py target/debug/hunkdiff --cases 1000 --seed 20261120
       - name: Verify GNU reference is available
         run: diff --version

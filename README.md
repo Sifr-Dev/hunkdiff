@@ -1,7 +1,7 @@
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset=".github/banner-dark.svg">
-    <img alt="sifr-diff — built from zero" src=".github/banner-light.svg" width="100%">
+    <img alt="hunkdiff — built from zero" src=".github/banner-light.svg" width="100%">
   </picture>
 </p>
 
@@ -19,13 +19,13 @@ cat b.txt | hunkdiff a.txt -
 ## Example
 
 ```console
-$ sifr-diff old.txt new.txt
+$ hunkdiff old.txt new.txt
 @@ -1,3 +1,3 @@
  same
 -old
 +new
  end
-$ sifr-diff same.txt same.txt ; echo $?
+$ hunkdiff same.txt same.txt ; echo $?
 0
 ```
 
@@ -47,7 +47,7 @@ $ sifr-diff same.txt same.txt ; echo $?
 cargo build --release --locked
 cargo test --locked
 cargo clippy --locked --all-targets -- -D warnings
-python3 tests/differential.py target/debug/sifr-diff
+python3 tests/differential.py target/debug/hunkdiff
 ```
 
 The seeded differential suite validates reconstruction, optimal LCS length,

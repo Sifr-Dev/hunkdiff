@@ -2,7 +2,7 @@
 
 ## Pipeline
 
-`sifr-diff` is a zero-runtime-dependency Rust command-line program.
+`hunkdiff` is a zero-runtime-dependency Rust command-line program.
 
 1. **Input** reads each path as bytes. `-` reads standard input once; `- -`
    compares that one stream with itself, matching GNU `diff - -`.

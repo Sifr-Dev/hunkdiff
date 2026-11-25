@@ -2,8 +2,8 @@
 """Independent unified-diff oracle for the differential test suite.
 
 Requires Python 3.8+; no third-party packages. Run from any directory:
-    python3 tests/differential.py path/to/sifr-diff
-    python3 tests/differential.py path/to/sifr-diff --cases 5000 --seed 42
+    python3 tests/differential.py path/to/hunkdiff
+    python3 tests/differential.py path/to/hunkdiff --cases 5000 --seed 42
 
 The random cases use the same deletion-first dynamic-programming policy as the
 Rust implementation, but the DP matrix, parser, patch validator, and generators
@@ -389,7 +389,7 @@ def main():
     use_gnu = shutil.which("diff") is not None
     cases = regression_cases() + [random_case(rng) for _ in range(args.cases)]
     unique = exact_gnu = 0
-    with tempfile.TemporaryDirectory(prefix="sifr-diff-oracle-") as directory:
+    with tempfile.TemporaryDirectory(prefix="hunkdiff-oracle-") as directory:
         for index, (a, b) in enumerate(cases):
             is_unique, matches_gnu = check_case(binary, directory, index, a, b, use_gnu)
             unique += is_unique
