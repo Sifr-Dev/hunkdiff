@@ -1,8 +1,17 @@
 # Release notes and checklist
 
-## Unreleased
+## 0.1.1
 
-Verification-focused changes, without adding runtime dependencies:
+This patch release makes the canonical `hunkdiff` executable name consistent
+across the Cargo package, CLI diagnostics, tests, documentation, CI, and release
+artifact. Diff behavior and exit statuses are unchanged from the verified 0.1.0
+implementation. The `v0.1.0` source archive predates this naming correction and
+must not be used for the new package recipe.
+
+The remaining verification notes are retained below as the project's release
+checklist. No further version bump is implied.
+
+## Historical verification notes
 
 - Preserve arbitrary input bytes in unified output; invalid UTF-8 is no longer
   replaced by U+FFFD.
