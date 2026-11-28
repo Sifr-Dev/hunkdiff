@@ -1,0 +1,9 @@
+{
+  "name": "hunkdiff",
+  "description": "Structured diff tool",
+  "stack": [
+    "cargo"
+  ],
+  "status": "active",
+  "primary_language": "Rust"
+}
